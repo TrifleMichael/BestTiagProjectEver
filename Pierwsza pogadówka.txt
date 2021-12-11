@@ -1,0 +1,38 @@
+Klasa wierzchołka
+
+class node:
+	def __init__(self):
+  	self.etykieta = "a"
+    self.indeks = 1
+    self.edges = [(2, "etykieta1"), (3, "etykieta2")]
+    
+  ---------------------- IN graf:
+  Notacja pliku wejściowego z grafem
+  
+# indeks = wiersz zapisu wierzchołka w txt wsadowym
+# etykieta = lista wierzchołków do których wchodzą krawędzie
+a = [1, 3]
+b = [2]
+c = []
+d = []
+a = 
+
+------------------------ produkcje SPO:
+Notacja produkcji
+
+[[produkca a]]
+a = [1]
+b = [0]
+
+a = []
+[[fajna zajbista produkcja]]
+a = [1]
+b = [0]
+
+a = []
+-------------------------
+Podział ról
+
+1) Parsing inputu + przekształcenie do naszej reprezentacji grafu Szymon
+2) GUI Michał
+3) Działanie produkcji Kuba + Filip
