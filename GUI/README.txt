@@ -4,7 +4,7 @@ Na razie GUI jest niezależne od całej reszty projektu i jest w stanie wyświet
 Nie ma jeszcze komunikacji z użytkownikiem, a graf musi być utworzony w kodzie w pliku TestGUI.
 
 
-Żeby odpalić kod trzeba mieć zainstalowany GraphViz oraz pobrać AppJar (AppJar znajduje się w tym repo), a następnie wykonać Main.py.
+Żeby odpalić kod trzeba mieć zainstalowany GraphViz oraz pobrać AppJar (AppJar znajduje się w tym repo), a następnie wykonać TestGUI.py.
 
 
 Plik "EfektProgramu" pokazuje jak wygląda output.
