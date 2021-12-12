@@ -36,3 +36,26 @@ Podział ról
 1) Parsing inputu + przekształcenie do naszej reprezentacji grafu Szymon
 2) GUI Michał
 3) Działanie produkcji Kuba + Filip
+
+
+------------------------
+1. Jaka forma danych wsadowych (grafu i produkcji)? Plik txt do załadowania na starcie wydaje się najprostszy/intuicyjny
+
+- index i etykieta (wierzchołek)
+- para wierzchołków i etykieta (krawędź)
+- produkcje mają swoje numerki, którymi są uruchamiane
+
+2. Jaka forma przechowywania grafu? Lista wierzchołków pozwala na najprostsze przechowywanie dodatkowych informacji, więc spodziewam się że to to
+
+- jak wyżej
+
+3. Czy wykonanie produkcji ma być wizualizowane krok po kroku, czy cała produkcja na raz?
+
+- Program ma zawierać:
+- Wizualicja grafu
+- Wizualizacji produkcji (chyba jako podgrafu wejściowego i wyjściowego)
+- Wierzchołki jako parametr produkcji (gdzie zacząć)
+
+4. Czy konsola jest ok do komunikacji z użytkownikiem (oprócz wizualizacji w oknie graficznym)
+
+- tak
