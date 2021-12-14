@@ -4,7 +4,7 @@ from graphviz import Digraph
 
 from production import *
 from vertex import *
-from parserer import *
+from graphParser import *
 
 
 # Zamienia tablice obiektow vertex na graf w formacie .dot
