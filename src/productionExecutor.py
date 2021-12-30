@@ -50,7 +50,7 @@ class ProductionExecutionTests(unittest.TestCase):
         
         self.assertEqual(right, aplay_production(left.copy(), production))
         
-    def test_with_vertex_removal(self):
+    def test_vertex_removal(self):
         left = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""])}
         right = {0: Vertex("a", 0, [], [])} 
         
@@ -61,6 +61,48 @@ class ProductionExecutionTests(unittest.TestCase):
         )
         
         self.assertEqual(right, aplay_production(left.copy(), production))
+        
+    def test_edge_removal(self):
+        left = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""])}
+        right = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [], [])}
+        
+        production = Production(
+            "P", 
+            left.copy(), 
+            right.copy()
+        )
+        
+        self.assertEqual(right, aplay_production(left.copy(), production))
+        
+    def test_vertex_not_included_in_production(self):
+        graph_before = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""]), 2:Vertex("c", 2, [0], [""])} 
+        graph_expected = {1:Vertex("b", 1, [], []), 2:Vertex("c", 2, [], [])} 
+        
+        left = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""])}
+        right = {1:Vertex("b", 1, [], [])}
+        
+        production = Production(
+            "P", 
+            left.copy(), 
+            right.copy()
+        )
+        
+        self.assertEqual(graph_expected, aplay_production(graph_before.copy(), production))
+        
+    def test_chenge_edge_name(self):
+        graph_before = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""]), 2:Vertex("c", 2, [0], [""])} 
+        graph_expected = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], ["name"]), 2:Vertex("c", 2, [0], [""])} 
+        
+        left = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""])}
+        right = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], ["name"])}
+        
+        production = Production(
+            "P", 
+            left.copy(), 
+            right.copy()
+        )
+        
+        self.assertEqual(graph_expected, aplay_production(graph_before.copy(), production))
         
         
 
