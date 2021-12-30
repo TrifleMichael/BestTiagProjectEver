@@ -1,8 +1,0 @@
-P0 ./data/production0.txt
-P1 ./data/production1.txt
-P2 ./data/production2.txt
-P3 ./data/production3.txt
-P4 ./data/production4.txt
-P5 ./data/production5.txt
-P6 ./data/production6.txt
-P7 ./data/production7.txt
