@@ -7,7 +7,7 @@ def fast_rm(array, id):
     array[id] = array[len(array) - 1]
     array.pop()
 
-def aplay_production(graph, production):
+def apply_production(graph, production):
     for id, v in production.right.items():
         if id in graph.keys():            
             for edge_id, edge_name in zip(graph[id].edges, graph[id].edges_names):
@@ -35,7 +35,7 @@ class ProductionExecutionTests(unittest.TestCase):
         graph = {0:Vertex("a", 0, [], [])} 
         production = Production("P", graph.copy(), graph.copy())
 
-        self.assertEqual(graph, aplay_production(graph.copy(), production))
+        self.assertEqual(graph, apply_production(graph.copy(), production))
 
     
     def test_basic_usage(self):
@@ -48,7 +48,7 @@ class ProductionExecutionTests(unittest.TestCase):
             right.copy()
         )
         
-        self.assertEqual(right, aplay_production(left.copy(), production))
+        self.assertEqual(right, apply_production(left.copy(), production))
         
     def test_vertex_removal(self):
         left = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""])}
@@ -60,7 +60,7 @@ class ProductionExecutionTests(unittest.TestCase):
             right.copy()
         )
         
-        self.assertEqual(right, aplay_production(left.copy(), production))
+        self.assertEqual(right, apply_production(left.copy(), production))
         
     def test_edge_removal(self):
         left = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""])}
@@ -72,7 +72,7 @@ class ProductionExecutionTests(unittest.TestCase):
             right.copy()
         )
         
-        self.assertEqual(right, aplay_production(left.copy(), production))
+        self.assertEqual(right, apply_production(left.copy(), production))
         
     def test_vertex_not_included_in_production(self):
         graph_before = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""]), 2:Vertex("c", 2, [0], [""])} 
@@ -87,7 +87,7 @@ class ProductionExecutionTests(unittest.TestCase):
             right.copy()
         )
         
-        self.assertEqual(graph_expected, aplay_production(graph_before.copy(), production))
+        self.assertEqual(graph_expected, apply_production(graph_before.copy(), production))
         
     def test_change_edge_name(self):
         graph_before = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""]), 2:Vertex("c", 2, [0], [""])} 
@@ -102,7 +102,7 @@ class ProductionExecutionTests(unittest.TestCase):
             right.copy()
         )
         
-        self.assertEqual(graph_expected, aplay_production(graph_before.copy(), production))
+        self.assertEqual(graph_expected, apply_production(graph_before.copy(), production))
         
         
 
