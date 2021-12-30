@@ -39,7 +39,7 @@ def productionToGif(production, leftGraphName, rightGraphName):
 
 # Zamienia plik tekstowy z grafem jako txt na plik gif
 def textFormGraphToGif(inputTextFileName, outputGifName):
-    vertexList = parse_graph(inputTextFileName)
+    vertexList = parse_initial_graph(inputTextFileName)
     graph = graphFromVertexList(vertexList)
     generateGraphImage(graph, outputGifName)
 
