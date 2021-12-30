@@ -89,7 +89,7 @@ class ProductionExecutionTests(unittest.TestCase):
         
         self.assertEqual(graph_expected, aplay_production(graph_before.copy(), production))
         
-    def test_chenge_edge_name(self):
+    def test_change_edge_name(self):
         graph_before = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""]), 2:Vertex("c", 2, [0], [""])} 
         graph_expected = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], ["name"]), 2:Vertex("c", 2, [0], [""])} 
         
