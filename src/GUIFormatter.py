@@ -18,7 +18,7 @@ def graphFromVertexList(vertexList):
         for e in v.edges:
             graph.edge(str(v.index), str(e.index))
 
-    graph.graph_attr['dpi']='200' # poprawa rozdzielczosci
+    graph.graph_attr['dpi']='150' # poprawa rozdzielczosci
     graph.graph_attr['size']='2' # dopasowanie maxymalnego wymiaru
     return graph
         
