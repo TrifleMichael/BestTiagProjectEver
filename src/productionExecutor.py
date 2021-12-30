@@ -1,6 +1,5 @@
 import unittest
 
-from graphParser import parse
 from vertex import Vertex 
 from production import Production 
 
@@ -16,6 +15,10 @@ def aplay_production(graph, production):
                     production.right.edges.append(edge_id)       
                     production.right.edges_names.append(edge_name)
         graph.update({v.index:v})
+        
+    for id in production.left.keys():
+        if id not in production.right.keys():
+            graph.pop(id)
         
     for id, v in graph.items():            
         if id not in production.left.keys():
@@ -38,6 +41,18 @@ class ProductionExecutionTests(unittest.TestCase):
     def test_basic_usage(self):
         left = {0: Vertex("a", 0, [], [])} 
         right = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""])}
+        
+        production = Production(
+            "P", 
+            left.copy(), 
+            right.copy()
+        )
+        
+        self.assertEqual(right, aplay_production(left.copy(), production))
+        
+    def test_with_vertex_removal(self):
+        left = {0:Vertex("a", 0, [1], [""]), 1:Vertex("b", 1, [0], [""])}
+        right = {0: Vertex("a", 0, [], [])} 
         
         production = Production(
             "P", 
