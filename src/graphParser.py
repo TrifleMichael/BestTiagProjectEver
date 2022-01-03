@@ -1,23 +1,17 @@
 from vertex import Vertex
 from production import Production
 
-def find_vertex_with_index(vertices, index):
-    for v in vertices:
-        if v.index == index:
-            return v
-
 def parse_graph(tab):
-    vertices = [None for _ in range(len(tab))]
+    vertices = {}
     for i in range(len(tab)):
-        vertices[i] = Vertex(tab[i][1], int(tab[i][0]), [], [])
+        vertices[int(tab[i][0])] = Vertex(tab[i][1], int(tab[i][0]), [], [])
     for i in range(len(tab)):
         for v in tab[i][2:]:
             to_add = v.split(":")
-            e = find_vertex_with_index(vertices, int(to_add[0]))
-            vertices[i].edges.append(e)
-            vertices[i].edges_names.append(to_add[1])
+            vertices[int(tab[i][0])].edges.append( vertices[int(to_add[0])] )
+            vertices[int(tab[i][0])].edges_names.append(to_add[1])
     return vertices
-
+    
 def parse_initial_graph(initial_graph_path):
     with open(initial_graph_path, "r") as f:
         temp = [row.split() for row in f.read().splitlines()]
@@ -58,7 +52,7 @@ def parse(initial_graph_path, productions_path, order_path):
 '''
 parse("./data/initial_graph.txt", "./data/productions.txt", "./data/productions_order.txt")
 zwróci krotkę składającą się z (a,b,c):
-a - tablicy wierzchołków początkowego grafu (z wpisanymi odpowiednimi krawędziami i ich nazwami)
+a - słownika wierzchołków początkowego grafu, gdzie kluczem jest indeks a wartością wierzchołek
 b - tablicy produkcji (składających się z nazwy, lewego i prawego grafu)
 c - tablicy porządku wywoływania kolejnych produkcji (po ich indeksach z b)
 '''
