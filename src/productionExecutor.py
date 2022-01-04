@@ -12,8 +12,8 @@ def apply_production(graph, production):
         if id in graph.keys():            
             for edge_id, edge_name in zip(graph[id].edges, graph[id].edges_names):
                 if edge_id not in production.left.keys():
-                    production.right.edges.append(edge_id)       
-                    production.right.edges_names.append(edge_name)
+                    v.edges.append(edge_id)       
+                    v.edges_names.append(edge_name)
         graph.update({v.index:v})
         
     for id in production.left.keys():
