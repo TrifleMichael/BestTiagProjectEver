@@ -68,12 +68,12 @@ def next_production_page():
         
 def applyProductionButtonFunction():
     graph = initialVerticies # TO DO: DYNAMICZNE GENEROWANIE KOLEJNYCH GRAFÓW
-    #productionNr = int(APP.getEntry("ProductionInputName"))
+    productionNr = int(APP.getEntry("ProductionInputName"))
     productionNr = 0
     print("You chose production", productionNr)
     production = productions[productionNr]
-    graph = apply_production(graph, production)
-    verticeArrayToGif(graph, "TemporaryGraph")
+    graph2 = apply_production(graph, production)
+    verticeArrayToGif(graph2, "TemporaryGraph")
     APP.reloadImage("MainImage", "TemporaryGraph.gif")
 
 # Funkcja przycisku
@@ -124,7 +124,7 @@ APP.reloadImage("ProductionRight2", "rightTest.gif")
 APP.addButton("Wpisz nazwę pliku z grafem a następnie naciśnij ten przycisk", changeGraphButtonFunction, 2, 0)
 APP.addEntry("GraphInputName", 2, 1)
 
-APP.addButton("Wyswietl wynik apply_production na grafie wejsciowym i produkcji 0", applyProductionButtonFunction, 3, 0)
+APP.addButton("Wyswietl wynik apply_production na grafie wejsciowym i produkcji z numerem podanym po prawej", applyProductionButtonFunction, 3, 0)
 APP.addEntry("ProductionInputName", 3, 1)
 
 
@@ -140,6 +140,7 @@ APP.go()
 # To do: usuwanie plików w funkcjach
 
 remove("InitialGraphImage.gif")
+remove("TemporaryGraph.gif")
 remove("leftTest.gif")
 remove("rightTest.gif")
 remove("baseBackround.gif")
