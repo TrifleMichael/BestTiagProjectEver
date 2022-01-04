@@ -29,11 +29,18 @@ def apply_production(graph, production):
         
     for id, v in graph.items():            
         if id not in production.left.keys():
-            for i in range(len(graph[id].edges)):
-                edge_id = graph[id].edges[i] 
+            to_rm = []
+            for i in range(len(v.edges)):
+                edge_id = v.edges[i] 
                 if edge_id in production.left.keys() and edge_id not in right.keys():
-                    fast_rm(graph[id].edges, i)
-                    fast_rm(graph[id].edges_names, i)
+                    to_rm.append(edge_id)
+            for eid in to_rm:
+                for j in range(len(v.edges)):
+                    if v.edges[j] == eid:
+                        fast_rm(v.edges, i)
+                        fast_rm(v.edges_names, i)
+                        break
+                    
                     
     return graph
 
