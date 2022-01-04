@@ -9,6 +9,7 @@ from production import *
 from vertex import *
 from graphParser import *
 from GUIFormatter import *
+from productionExecutor import *
 
 class ProductionPageKeeper:
     def __init__(self):
@@ -64,6 +65,16 @@ def next_production_page():
         APP.reloadImage("ProductionRight2", "rightTest.gif")
         
         APP.setLabel("PageCounter", PPK.currentPage)
+        
+def applyProductionButtonFunction():
+    graph = initialVerticies # TO DO: DYNAMICZNE GENEROWANIE KOLEJNYCH GRAFÓW
+    #productionNr = int(APP.getEntry("ProductionInputName"))
+    productionNr = 0
+    print("You chose production", productionNr)
+    production = productions[productionNr]
+    graph = apply_production(graph, production)
+    verticeArrayToGif(graph, "TemporaryGraph")
+    APP.reloadImage("MainImage", "TemporaryGraph.gif")
 
 # Funkcja przycisku
 def last_production_page():
@@ -113,7 +124,7 @@ APP.reloadImage("ProductionRight2", "rightTest.gif")
 APP.addButton("Wpisz nazwę pliku z grafem a następnie naciśnij ten przycisk", changeGraphButtonFunction, 2, 0)
 APP.addEntry("GraphInputName", 2, 1)
 
-APP.addButton("(Work in progress) wybierz numer produkcji i wciśnij ten przycisk", testShowProduction, 3, 0)
+APP.addButton("Wyswietl wynik apply_production na grafie wejsciowym i produkcji 0", applyProductionButtonFunction, 3, 0)
 APP.addEntry("ProductionInputName", 3, 1)
 
 
