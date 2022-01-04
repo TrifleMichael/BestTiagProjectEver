@@ -8,7 +8,7 @@ def parse_graph(tab):
     for i in range(len(tab)):
         for v in tab[i][2:]:
             to_add = v.split(":")
-            vertices[int(tab[i][0])].edges.append( vertices[int(to_add[0])] )
+            vertices[int(tab[i][0])].edges.append( int(to_add[0]) )
             vertices[int(tab[i][0])].edges_names.append(to_add[1])
     return vertices
     
