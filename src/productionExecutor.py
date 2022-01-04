@@ -8,7 +8,9 @@ def fast_rm(array, id):
     array.pop()
 
 def apply_production(graph, production):
-    for id, v in production.right.items():
+    right = production.right.copy()
+    
+    for id, v in right.items():
         if id in graph.keys():            
             for edge_id, edge_name in zip(graph[id].edges, graph[id].edges_names):
                 if edge_id not in production.left.keys():
@@ -17,17 +19,17 @@ def apply_production(graph, production):
         graph.update({v.index:v})
         
     for id in production.left.keys():
-        if id not in production.right.keys():
+        if id not in right.keys():
             graph.pop(id)
         
     for id, v in graph.items():            
         if id not in production.left.keys():
             for i in range(len(graph[id].edges)):
                 edge_id = graph[id].edges[i] 
-                if edge_id in production.left.keys() and edge_id not in production.right.keys():
+                if edge_id in production.left.keys() and edge_id not in right.keys():
                     fast_rm(graph[id].edges, i)
                     fast_rm(graph[id].edges_names, i)
-                           
+                    
     return graph
 
 class ProductionExecutionTests(unittest.TestCase): 
