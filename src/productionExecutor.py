@@ -1,4 +1,5 @@
 import unittest
+import copy
 
 from vertex import Vertex 
 from production import Production 
@@ -8,7 +9,7 @@ def fast_rm(array, id):
     array.pop()
 
 def apply_production(graph, production):
-    right = production.right.copy()
+    right = copy.deepcopy(production.right)
     
     for id in production.left.keys():
         if id not in graph.keys(): 
