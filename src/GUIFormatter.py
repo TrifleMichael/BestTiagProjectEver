@@ -9,14 +9,15 @@ from graphParser import *
 
 # Zamienia tablice obiektow vertex na graf w formacie .gv
 def graphFromVertexList(vertexList):
+    keys = vertexList.keys()
     graph = Digraph(name = "TemporaryGraph")
     
-    for v in vertexList:
-        graph.node(str(v.index), str(v.label))
+    for v in keys:
+        graph.node(str(vertexList[v].index), str(vertexList[v].label))
         
-    for v in vertexList:
-        for e in v.edges:
-            graph.edge(str(v.index), str(e.index))
+    for v in keys:
+        for e in vertexList[v].edges:
+            graph.edge(str(vertexList[v].index), str(e.index))
 
     graph.graph_attr['dpi']='150' # poprawa rozdzielczosci
     graph.graph_attr['size']='2' # dopasowanie maxymalnego wymiaru
