@@ -10,6 +10,11 @@ def fast_rm(array, id):
 def apply_production(graph, production):
     right = production.right.copy()
     
+    for id in right.keys():
+        if id in graph.keys() and id not in production.left.keys(): 
+            print(f"Production execution failed: vertex {id} is in the right side and the graph, but not in the left side of the production")
+            return graph 
+    
     for id, v in right.items():
         if id in graph.keys():            
             for edge_id, edge_name in zip(graph[id].edges, graph[id].edges_names):
