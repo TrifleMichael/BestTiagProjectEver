@@ -29,112 +29,131 @@ class ProductionPageKeeper:
         return False
         
 
+class MainGraph:
+    def __init__(self, verticeArray):
+        self.verticeArray = verticeArray
+
+    def applyProduction(self, production):
+        self.verticeArray = apply_production(self.verticeArray, production)
+
 # Główny obiekt GUI
 APP = gui("Single Push Out Visualisation") #, "800x800"
 PPK = ProductionPageKeeper()
+PROD_PER_PAGE = 3
 
-# Funkcja przycisku
-def changeImageButtonFunction():
-    imageName = APP.getEntry("ImageName")
-    print("Loading image", imageName)
-    APP.reloadImage("MainImage", imageName)
 
-# Funkcja przycisku
-def changeGraphButtonFunction():
-    graphName = APP.getEntry("GraphInputName")
-    print("Interpreting graph")
-    textFormGraphToGif(graphName, "TemporaryGraph")
-    APP.reloadImage("MainImage", "TemporaryGraph.gif")
 
-# Funkcja przycisku
-def testShowProduction():
-    graph1 = textFormGraphToGif("pl.txt", "PL")    
-    graph2 = textFormGraphToGif("pr.txt", "PR")
-    APP.reloadImage("ProductionLeft", "PL.gif")
-    APP.reloadImage("ProductionRight", "PR.gif")
-
-# Funkcja przycisku
-def next_production_page():
-    if PPK.nextPage():        
-        productionToGif(productions[PPK.currentPage*2], "leftTest", "rightTest")
+def refresh_productions():
+    if PPK.currentPage*PROD_PER_PAGE < len(productions): 
+        productionToGif(productions[PPK.currentPage*PROD_PER_PAGE], "leftTest", "rightTest")
         APP.reloadImage("ProductionLeft1", "leftTest.gif")
         APP.reloadImage("ProductionRight1", "rightTest.gif")
+        APP.setLabel("ProductionIndex1", PPK.currentPage*PROD_PER_PAGE)
+    else:
+        APP.setLabel("ProductionIndex1", "~")
+        APP.reloadImage("ProductionLeft1", "sideGraphBackground.gif")
+        APP.reloadImage("ProductionRight1", "sideGraphBackground.gif")
         
-        productionToGif(productions[PPK.currentPage*2+1], "leftTest", "rightTest")
+    if PPK.currentPage*PROD_PER_PAGE+1 < len(productions): 
+        productionToGif(productions[PPK.currentPage*PROD_PER_PAGE+1], "leftTest", "rightTest")
         APP.reloadImage("ProductionLeft2", "leftTest.gif")
         APP.reloadImage("ProductionRight2", "rightTest.gif")
+        APP.setLabel("ProductionIndex2", PPK.currentPage*PROD_PER_PAGE+1)
+    else:
+        APP.setLabel("ProductionIndex2", "~")
+        APP.reloadImage("ProductionLeft2", "sideGraphBackground.gif")
+        APP.reloadImage("ProductionRight2", "sideGraphBackground.gif")
+
+    if PPK.currentPage*PROD_PER_PAGE+2 < len(productions): 
+        productionToGif(productions[PPK.currentPage*PROD_PER_PAGE+2], "leftTest", "rightTest")
+        APP.reloadImage("ProductionLeft3", "leftTest.gif")
+        APP.reloadImage("ProductionRight3", "rightTest.gif")
+        APP.setLabel("ProductionIndex3", PPK.currentPage*PROD_PER_PAGE+2)
+    else:
+        APP.setLabel("ProductionIndex3", "~")
+        APP.reloadImage("ProductionLeft3", "sideGraphBackground.gif")
+        APP.reloadImage("ProductionRight3", "sideGraphBackground.gif")
         
-        APP.setLabel("PageCounter", PPK.currentPage)
+    APP.setLabel("PageCounter", PPK.currentPage)
+
+
+# Funkcja przycisku zmiany strony z produkcjami
+def next_production_page():
+    if PPK.nextPage():        
+        refresh_productions()
         
 def applyProductionButtonFunction():
-    graph = initialVerticies # TO DO: DYNAMICZNE GENEROWANIE KOLEJNYCH GRAFÓW
     productionNr = int(APP.getEntry("ProductionInputName"))
-    productionNr = 0
-    print("You chose production", productionNr)
-    production = productions[productionNr]
-    graph2 = apply_production(graph, production)
-    verticeArrayToGif(graph2, "TemporaryGraph")
+    production = productions[productionNr]    
+    MAIN_GRAPH.applyProduction(production)
+    verticeArrayToGif(MAIN_GRAPH.verticeArray, "TemporaryGraph", dpi=600, size = 1.3)
     APP.reloadImage("MainImage", "TemporaryGraph.gif")
 
 # Funkcja przycisku
 def last_production_page():
-    if PPK.lastPage():        
-        productionToGif(productions[PPK.currentPage*2], "leftTest", "rightTest")
-        APP.reloadImage("ProductionLeft1", "leftTest.gif")
-        APP.reloadImage("ProductionRight1", "rightTest.gif")
-        
-        productionToGif(productions[PPK.currentPage*2+1], "leftTest", "rightTest")
-        APP.reloadImage("ProductionLeft2", "leftTest.gif")
-        APP.reloadImage("ProductionRight2", "rightTest.gif")
-        
-        APP.setLabel("PageCounter", PPK.currentPage)
+    if PPK.lastPage():   
+        refresh_productions()
 
 # parsing danych
 initialVerticies, productions, productionIndicies = parse("./data/initial_graph.txt", "./data/productions.txt", "./data/productions_order.txt")
-PPK.maxPage = int((len(productions)-1)/2) # TO DO - NIE WYSWIETLA OSTATNIEJ PRODUCJI JESLI NIEPARZYSTE
+MAIN_GRAPH = MainGraph(initialVerticies)
+PPK.maxPage = int((len(productions))/3)
 
 # dziwne rzeczy aby dopasowac rozmiar okien z produkcjami
-productionToGif(productions[0], "leftTest", "baseBackround")
 
-# graf początkowy
-verticeArrayToGif(initialVerticies, "InitialGraphImage")
-APP.addImage("MainImage", "InitialGraphImage.gif", 0, 0)
+# glowne okno z grafem
+APP.addImage("MainImage", "mainGraphBackground.gif", 0, 0, 3, 3)
+verticeArrayToGif(MAIN_GRAPH.verticeArray, "InitialGraphImage", dpi=600, size = 1.3)
+APP.reloadImage("MainImage", "InitialGraphImage.gif")
 
 # produkcje 1
-
-APP.addImage("ProductionLeft1", "baseBackround.gif", 0, 1) # dziwne rzeczy
-APP.addImage("ProductionRight1", "baseBackround.gif", 0, 3)
+APP.addImage("ProductionLeft1", "sideGraphBackground.gif", 0, 5) # poczatkowy gif celem wymuszenia rozmiaru
+APP.addImage("ProductionRight1", "sideGraphBackground.gif", 0, 7)
 
 productionToGif(productions[0], "leftTest", "rightTest")
 APP.reloadImage("ProductionLeft1", "leftTest.gif")
-APP.addImage("ArrowImage1", "arrow.gif", 0, 2)
+APP.addImage("ArrowImage1", "arrow.gif", 0, 6)
 APP.reloadImage("ProductionRight1", "rightTest.gif")
 
 # produckcja 2
-APP.addImage("ProductionLeft2", "baseBackround.gif", 1, 1) # dziwne rzeczy
-APP.addImage("ProductionRight2", "baseBackround.gif", 1, 3)
+APP.addImage("ProductionLeft2", "sideGraphBackground.gif", 1, 5) 
+APP.addImage("ProductionRight2", "sideGraphBackground.gif", 1, 7)
 
 productionToGif(productions[1], "leftTest", "rightTest")
 APP.reloadImage("ProductionLeft2", "leftTest.gif")
-APP.addImage("ArrowImage2", "arrow.gif", 1, 2)
+APP.addImage("ArrowImage2", "arrow.gif", 1, 6)
 APP.reloadImage("ProductionRight2", "rightTest.gif")
 
+# produckcja 3
+APP.addImage("ProductionLeft3", "sideGraphBackground.gif", 2, 5)
+APP.addImage("ProductionRight3", "sideGraphBackground.gif", 2, 7)
+
+productionToGif(productions[2], "leftTest", "rightTest")
+APP.reloadImage("ProductionLeft3", "leftTest.gif")
+APP.addImage("ArrowImage3", "arrow.gif", 2, 6)
+APP.reloadImage("ProductionRight3", "rightTest.gif")
+
+# numery produkcji
+APP.addLabel("ProductionIndex1", PPK.currentPage, 0, 4)
+APP.addLabel("ProductionIndex2", PPK.currentPage+1, 1, 4)
+APP.addLabel("ProductionIndex3", PPK.currentPage+2, 2, 4)
+
+APP.setLabelWidth("ProductionIndex1", 4)
+APP.setLabelWidth("ProductionIndex2", 4)
+APP.setLabelWidth("ProductionIndex3", 4)
+
 # przyciski
+APP.addButton("Ok", applyProductionButtonFunction, 3, 4)
+APP.setButtonWidth("Ok", 10)
+APP.addButton("<", last_production_page, 3, 5)
+APP.addButton(">", next_production_page, 3, 7)
 
-APP.addButton("Wpisz nazwę pliku z grafem a następnie naciśnij ten przycisk", changeGraphButtonFunction, 2, 0)
-APP.addEntry("GraphInputName", 2, 1)
-
-APP.addButton("Wyswietl wynik apply_production na grafie wejsciowym i produkcji z numerem podanym po prawej", applyProductionButtonFunction, 3, 0)
-APP.addEntry("ProductionInputName", 3, 1)
-
-
-APP.addLabel("PageInfo", "Current production page: ", 2, 2)
-APP.addLabel("PageCounter", PPK.currentPage, 2, 3)
-APP.addButton("<", last_production_page, 3, 2)
-APP.addButton(">", next_production_page, 3, 3)
+# Napisy i pola tekstowe
+APP.addEntry("ProductionInputName", 3, 0)
+APP.setEntryAlign("ProductionInputName", "left")
+APP.addLabel("PageCounter", PPK.currentPage, 3, 6)
 
 # uruchomienie
-
 APP.go()
 
 # To do: usuwanie plików w funkcjach
