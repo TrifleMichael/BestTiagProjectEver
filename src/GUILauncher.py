@@ -149,7 +149,7 @@ APP.addButton("<", last_production_page, 3, 5)
 APP.addButton(">", next_production_page, 3, 7)
 
 # Napisy i pola tekstowe
-APP.addEntry("ProductionInputName", 3, 0)
+APP.addEntry("ProductionInputName", 3, 1)
 APP.setEntryAlign("ProductionInputName", "left")
 APP.addLabel("PageCounter", PPK.currentPage, 3, 6)
 
