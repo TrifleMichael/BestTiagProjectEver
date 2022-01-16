@@ -41,41 +41,39 @@ APP = gui("Single Push Out Visualisation") #, "800x800"
 PPK = ProductionPageKeeper()
 PROD_PER_PAGE = 3
 
-# Funkcja wykonania produkcji
-def testShowProduction():
-    graph1 = textFormGraphToGif("pl.txt", "PL")    
-    graph2 = textFormGraphToGif("pr.txt", "PR")
-    APP.reloadImage("ProductionLeft", "PL.gif")
-    APP.reloadImage("ProductionRight", "PR.gif")
-    remove("PL.gif")
-    remove("PR.gif")
+
 
 def refresh_productions():
     if PPK.currentPage*PROD_PER_PAGE < len(productions): 
         productionToGif(productions[PPK.currentPage*PROD_PER_PAGE], "leftTest", "rightTest")
         APP.reloadImage("ProductionLeft1", "leftTest.gif")
         APP.reloadImage("ProductionRight1", "rightTest.gif")
-        APP.setLabel("Production Index1", PPK.currentPage*PROD_PER_PAGE)
+        APP.setLabel("ProductionIndex1", PPK.currentPage*PROD_PER_PAGE)
     else:
-        APP.setLabel("Production Index1", "~")
+        APP.setLabel("ProductionIndex1", "~")
+        APP.reloadImage("ProductionLeft1", "sideGraphBackground.gif")
+        APP.reloadImage("ProductionRight1", "sideGraphBackground.gif")
         
     if PPK.currentPage*PROD_PER_PAGE+1 < len(productions): 
         productionToGif(productions[PPK.currentPage*PROD_PER_PAGE+1], "leftTest", "rightTest")
         APP.reloadImage("ProductionLeft2", "leftTest.gif")
         APP.reloadImage("ProductionRight2", "rightTest.gif")
-        APP.setLabel("Production Index2", PPK.currentPage*PROD_PER_PAGE+1)
+        APP.setLabel("ProductionIndex2", PPK.currentPage*PROD_PER_PAGE+1)
     else:
-        APP.setLabel("Production Index2", "~")
+        APP.setLabel("ProductionIndex2", "~")
+        APP.reloadImage("ProductionLeft2", "sideGraphBackground.gif")
+        APP.reloadImage("ProductionRight2", "sideGraphBackground.gif")
 
     if PPK.currentPage*PROD_PER_PAGE+2 < len(productions): 
         productionToGif(productions[PPK.currentPage*PROD_PER_PAGE+2], "leftTest", "rightTest")
         APP.reloadImage("ProductionLeft3", "leftTest.gif")
         APP.reloadImage("ProductionRight3", "rightTest.gif")
-        APP.setLabel("Production Index3", PPK.currentPage*PROD_PER_PAGE+2)
+        APP.setLabel("ProductionIndex3", PPK.currentPage*PROD_PER_PAGE+2)
     else:
-        APP.setLabel("Production Index3", "~")
+        APP.setLabel("ProductionIndex3", "~")
+        APP.reloadImage("ProductionLeft3", "sideGraphBackground.gif")
+        APP.reloadImage("ProductionRight3", "sideGraphBackground.gif")
         
-    print("CURRENT PAGE", PPK.currentPage)
     APP.setLabel("PageCounter", PPK.currentPage)
 
 
@@ -86,10 +84,9 @@ def next_production_page():
         
 def applyProductionButtonFunction():
     productionNr = int(APP.getEntry("ProductionInputName"))
-    print("You chose production", productionNr)
     production = productions[productionNr]    
     MAIN_GRAPH.applyProduction(production)
-    verticeArrayToGif(MAIN_GRAPH.verticeArray, "TemporaryGraph")
+    verticeArrayToGif(MAIN_GRAPH.verticeArray, "TemporaryGraph", dpi=600, size = 1.3)
     APP.reloadImage("MainImage", "TemporaryGraph.gif")
 
 # Funkcja przycisku
@@ -103,17 +100,15 @@ MAIN_GRAPH = MainGraph(initialVerticies)
 PPK.maxPage = int((len(productions))/3)
 
 # dziwne rzeczy aby dopasowac rozmiar okien z produkcjami
-productionToGif(productions[0], "leftTest", "baseBackround")
 
 # glowne okno z grafem
-APP.addImage("MainImage", "600x600white.gif", 0, 0, 3, 3)
-verticeArrayToGif(MAIN_GRAPH.verticeArray, "InitialGraphImage")
+APP.addImage("MainImage", "mainGraphBackground.gif", 0, 0, 3, 3)
+verticeArrayToGif(MAIN_GRAPH.verticeArray, "InitialGraphImage", dpi=600, size = 1.3)
 APP.reloadImage("MainImage", "InitialGraphImage.gif")
 
 # produkcje 1
-
-APP.addImage("ProductionLeft1", "baseBackround.gif", 0, 5) # poczatkowy gif celem wymuszenia rozmiaru
-APP.addImage("ProductionRight1", "baseBackround.gif", 0, 7)
+APP.addImage("ProductionLeft1", "sideGraphBackground.gif", 0, 5) # poczatkowy gif celem wymuszenia rozmiaru
+APP.addImage("ProductionRight1", "sideGraphBackground.gif", 0, 7)
 
 productionToGif(productions[0], "leftTest", "rightTest")
 APP.reloadImage("ProductionLeft1", "leftTest.gif")
@@ -121,8 +116,8 @@ APP.addImage("ArrowImage1", "arrow.gif", 0, 6)
 APP.reloadImage("ProductionRight1", "rightTest.gif")
 
 # produckcja 2
-APP.addImage("ProductionLeft2", "baseBackround.gif", 1, 5) 
-APP.addImage("ProductionRight2", "baseBackround.gif", 1, 7)
+APP.addImage("ProductionLeft2", "sideGraphBackground.gif", 1, 5) 
+APP.addImage("ProductionRight2", "sideGraphBackground.gif", 1, 7)
 
 productionToGif(productions[1], "leftTest", "rightTest")
 APP.reloadImage("ProductionLeft2", "leftTest.gif")
@@ -130,8 +125,8 @@ APP.addImage("ArrowImage2", "arrow.gif", 1, 6)
 APP.reloadImage("ProductionRight2", "rightTest.gif")
 
 # produckcja 3
-APP.addImage("ProductionLeft3", "baseBackround.gif", 2, 5)
-APP.addImage("ProductionRight3", "baseBackround.gif", 2, 7)
+APP.addImage("ProductionLeft3", "sideGraphBackground.gif", 2, 5)
+APP.addImage("ProductionRight3", "sideGraphBackground.gif", 2, 7)
 
 productionToGif(productions[2], "leftTest", "rightTest")
 APP.reloadImage("ProductionLeft3", "leftTest.gif")
@@ -139,18 +134,24 @@ APP.addImage("ArrowImage3", "arrow.gif", 2, 6)
 APP.reloadImage("ProductionRight3", "rightTest.gif")
 
 # numery produkcji
-APP.addLabel("Production Index1", PPK.currentPage, 0, 4)
-APP.addLabel("Production Index2", PPK.currentPage+1, 1, 4)
-APP.addLabel("Production Index3", PPK.currentPage+2, 2, 4)
+APP.addLabel("ProductionIndex1", PPK.currentPage, 0, 4)
+APP.addLabel("ProductionIndex2", PPK.currentPage+1, 1, 4)
+APP.addLabel("ProductionIndex3", PPK.currentPage+2, 2, 4)
+
+APP.setLabelWidth("ProductionIndex1", 4)
+APP.setLabelWidth("ProductionIndex2", 4)
+APP.setLabelWidth("ProductionIndex3", 4)
 
 # przyciski
-
-APP.addButton("Wyswietl wynik apply_production na grafie wejsciowym i produkcji z numerem podanym po prawej", applyProductionButtonFunction, 3, 4)
-APP.addEntry("ProductionInputName", 3, 1)
-
-APP.addLabel("PageCounter", PPK.currentPage, 3, 6)
+APP.addButton("Ok", applyProductionButtonFunction, 3, 4)
+APP.setButtonWidth("Ok", 10)
 APP.addButton("<", last_production_page, 3, 5)
 APP.addButton(">", next_production_page, 3, 7)
+
+# Napisy i pola tekstowe
+APP.addEntry("ProductionInputName", 3, 0)
+APP.setEntryAlign("ProductionInputName", "left")
+APP.addLabel("PageCounter", PPK.currentPage, 3, 6)
 
 # uruchomienie
 APP.go()

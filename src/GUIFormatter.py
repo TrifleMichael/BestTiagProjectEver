@@ -8,7 +8,7 @@ from graphParser import *
 
 
 # Zamienia tablice obiektow vertex na graf w formacie .gv
-def graphFromVertexList(vertexList):
+def graphFromVertexList(vertexList, dpi = 150, size = 2):
     keys = vertexList.keys()
     graph = Digraph(name = "TemporaryGraph")
     
@@ -19,8 +19,8 @@ def graphFromVertexList(vertexList):
         for e in vertexList[v].edges:
             graph.edge(str(vertexList[v].index), str(e))
 
-    graph.graph_attr['dpi']='150' # poprawa rozdzielczosci
-    graph.graph_attr['size']='2' # dopasowanie maxymalnego wymiaru
+    graph.graph_attr['dpi']=str(dpi) # poprawa rozdzielczosci
+    graph.graph_attr['size']=str(size) # dopasowanie maxymalnego wymiaru
     return graph
         
 # Tworzy plik .gif na podstawie grafu w formacie .gv
@@ -28,8 +28,8 @@ def generateGraphImage(graph, fileName):
     graph.render(filename=fileName, format="gif", view=False)
 
 # Zamienia tablice vertex na gif
-def verticeArrayToGif(verticeArray, gifName):
-    graph = graphFromVertexList(verticeArray)
+def verticeArrayToGif(verticeArray, gifName, dpi = 150, size = 2):
+    graph = graphFromVertexList(verticeArray, dpi, size)
     generateGraphImage(graph, gifName)
 
 # Zamienia produkcje na dwa gif'y prawej i lewej strony
