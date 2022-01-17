@@ -13,7 +13,7 @@ def graphFromVertexList(vertexList, dpi = 150, size = 2):
     graph = Digraph(name = "TemporaryGraph")
     
     for v in keys:
-        graph.node(str(vertexList[v].index), str(vertexList[v].label))
+        graph.node(str(vertexList[v].index), str(vertexList[v].label+str(vertexList[v].index)))
         
     for v in keys:
         for i, e in enumerate(vertexList[v].edges):
