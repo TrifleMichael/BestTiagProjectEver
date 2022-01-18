@@ -1,7 +1,0 @@
-Trzeba zrobić:
-- Dodać etykiety krawędzi,
-- W produkcjach przechowywać informacje o indeksach wierzchołków prawej i lewej strony (omija to problem wyszukiwania podgrafu i wielu możliwych podgrafów izomorficznych z lewą stroną produkcji). Indeksy powinny być podane już na poziomie plików tekstowych z produkcjami oraz grafem wsadowym.
-
-Można zrobić:
-- Jeden plik wsadowy do wszystkich produkcji [tbh nie warto - Michał]
-agreed - Szymon
