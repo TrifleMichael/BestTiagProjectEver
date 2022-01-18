@@ -6,3 +6,5 @@ P4 ./data/production4.txt
 P5 ./data/production5.txt
 P6 ./data/production6.txt
 P7 ./data/production7.txt
+P8 ./data/production8.txt
+P9 ./data/production9.txt
