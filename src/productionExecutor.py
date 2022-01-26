@@ -7,40 +7,65 @@ from production import Production
 def fast_rm(array, id):
     array[id] = array[len(array) - 1]
     array.pop()
+    
+def find_key(d, val):
+    for key, value in d.items():  # for name, age in dictionary.iteritems():  (for Python 2.x)
+        if val == value:
+            return key
+    return -1
 
-def apply_production(graph, production, indexPairs): # indexPairs to tablica par indeksów (indexProdukcji, indexGrafu). indexGrafu nalezy traktowac jako index produkcji
-                                                     # przyklad - (0, 1) oznacza ze za indeks 0 w produkcji podstawiamy index 1 w grafie
+def apply_production(graph, production, indexPairs): 
+    indexPairs = dict(indexPairs)
     right = copy.deepcopy(production.right)
     
+    # nadanie indekos dla nowych wieszcholkow
+    offset = 0
+    max_id = max(graph.keys())
+    for id in right.keys():
+        if id not in production.left.keys():
+            offset += 1
+            indexPairs.update({id:max_id + offset})
+            
+    # przemianowanie prawej strony produkcji
+    for id, v in right.items():
+        right[id].index = indexPairs[id]
+        for i in range(len(v.edges)):
+            v.edges[i] = indexPairs[v.edges[i]] 
+    
     for id in production.left.keys():
-        if id not in graph.keys(): 
-            print(f"Production execution failed: vertex {id} is in the production left side, but not in the graph")
+        if indexPairs[id] not in graph.keys(): 
+            print(f"Production execution failed: vertex {indexPairs[id]} is in the production left side, but not in the graph")
             return graph 
     
     for id in right.keys():
-        if id in graph.keys() and id not in production.left.keys(): 
-            print(f"Production execution failed: vertex {id} is in the right side and the graph, but not in the left side of the production")
+        if indexPairs[id] in graph.keys() and id not in production.left.keys(): 
+            print(f"Production execution failed: vertex {id} (production id) is in the right side and the graph, but not in the left side of the production")
             return graph 
     
+    
     for id, v in right.items():
+        id = indexPairs[id]
         if id in graph.keys():            
-            for edge_id, edge_name in zip(graph[id].edges, graph[id].edges_names):
-                if edge_id not in production.left.keys():
-                    v.edges.append(edge_id)       
+            for edge_v_id, edge_name in zip(graph[id].edges, graph[id].edges_names):
+                p_edge_v_id = find_key(indexPairs, edge_v_id)
+                if p_edge_v_id not in production.left.keys():
+                    v.edges.append(edge_v_id)       
                     v.edges_names.append(edge_name)
-        graph.update({v.index:v})
+        graph.update({id:v})
         
     for id in production.left.keys():
         if id not in right.keys():
-            graph.pop(id)
+            graph.pop(indexPairs[id])
         
-    for id, v in graph.items():            
-        if id not in production.left.keys():
+    for id, v in graph.items():
+        key = find_key(indexPairs, id)
+        if key != -1 and key not in production.left.keys():
             to_rm = []
             for i in range(len(v.edges)):
-                edge_id = v.edges[i] 
-                if edge_id in production.left.keys() and edge_id not in right.keys():
-                    to_rm.append(edge_id)
+                edge_v_id = v.edges[i]
+                p_edge_v_id = find_key(indexPairs, edge_v_id)
+                if p_edge_v_id in production.left.keys() and p_edge_v_id not in right.keys():
+                    to_rm.append(edge_v_id)
             for eid in to_rm:
                 for j in range(len(v.edges)):
                     if v.edges[j] == eid:
