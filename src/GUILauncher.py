@@ -10,6 +10,7 @@ from vertex import *
 from graphParser import *
 from GUIFormatter import *
 from productionExecutor import *
+from productionParser import *
 
 class ProductionPageKeeper:
     def __init__(self):
@@ -33,8 +34,8 @@ class MainGraph:
     def __init__(self, verticeArray):
         self.verticeArray = verticeArray
 
-    def applyProduction(self, production):
-        self.verticeArray = apply_production(self.verticeArray, production)
+    def applyProduction(self, production, indexPairs):
+        self.verticeArray = apply_production(self.verticeArray, production, indexPairs)
 
 # Główny obiekt GUI
 APP = gui("Single Push Out Visualisation") #, "800x800"
@@ -83,11 +84,14 @@ def next_production_page():
         refresh_productions()
         
 def applyProductionButtonFunction():
-    productionNr = int(APP.getEntry("ProductionInputName"))
-    production = productions[productionNr]    
-    MAIN_GRAPH.applyProduction(production)
+    productionString = APP.getEntry("ProductionInputName")
+    PP = ProductionParser(productionString)
+    
+    production = productions[PP.productionNr]    
+    MAIN_GRAPH.applyProduction(production, PP.indexPairs)
     verticeArrayToGif(MAIN_GRAPH.verticeArray, "TemporaryGraph", dpi=600, size = 1.3)
     APP.reloadImage("MainImage", "TemporaryGraph.gif")
+
 
 # Funkcja przycisku
 def last_production_page():

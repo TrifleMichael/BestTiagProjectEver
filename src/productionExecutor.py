@@ -8,7 +8,8 @@ def fast_rm(array, id):
     array[id] = array[len(array) - 1]
     array.pop()
 
-def apply_production(graph, production):
+def apply_production(graph, production, indexPairs): # indexPairs to tablica par indeksów (indexProdukcji, indexGrafu). indexGrafu nalezy traktowac jako index produkcji
+                                                     # przyklad - (0, 1) oznacza ze za indeks 0 w produkcji podstawiamy index 1 w grafie
     right = copy.deepcopy(production.right)
     
     for id in production.left.keys():
