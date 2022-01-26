@@ -61,8 +61,8 @@ def apply_production(graph, production, indexPairs):
             for eid in to_rm:
                 for j in range(len(v.edges)):
                     if v.edges[j] == eid:
-                        fast_rm(v.edges, i)
-                        fast_rm(v.edges_names, i)
+                        fast_rm(v.edges, j)
+                        fast_rm(v.edges_names, j)
                         break
                     
                     
