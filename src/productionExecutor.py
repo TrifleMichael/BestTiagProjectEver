@@ -9,7 +9,7 @@ def fast_rm(array, id):
     array.pop()
     
 def find_key(d, val):
-    for key, value in d.items():  # for name, age in dictionary.iteritems():  (for Python 2.x)
+    for key, value in d.items():  
         if val == value:
             return key
     return -1
@@ -50,8 +50,7 @@ def apply_production(graph, production, indexPairs):
             graph.pop(indexPairs[id])
         
     for id, v in graph.items():
-        key = find_key(indexPairs, id)
-        if key != -1 and key not in production.left.keys():
+        if find_key(indexPairs, id) == -1:
             to_rm = []
             for i in range(len(v.edges)):
                 edge_v_id = v.edges[i]
