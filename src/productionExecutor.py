@@ -17,15 +17,7 @@ def find_key(d, val):
 def apply_production(graph, production, indexPairs): 
     indexPairs = dict(indexPairs)
     right = copy.deepcopy(production.right)
-    
-    # nadanie indekos dla nowych wieszcholkow
-    offset = 0
-    max_id = max(graph.keys())
-    for id in right.keys():
-        if id not in production.left.keys():
-            offset += 1
-            indexPairs.update({id:max_id + offset})
-            
+      
     # przemianowanie prawej strony produkcji
     for id, v in right.items():
         right[id].index = indexPairs[id]
